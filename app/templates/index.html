@@ -11,8 +11,9 @@
                 extend: {
                     colors: {
                         ink: '#0E1B2F',
-                        paper: '#F5F7FA',
-                        line: '#E3E8EF',
+                        paper: '#0A1120',
+                        panel: '#0E1729',
+                        line: '#1C2A44',
                         brand: {
                             50: '#EEF4FF', 100: '#DCE8FF', 200: '#BCD3FF', 300: '#8DB4FF',
                             400: '#5A8DFF', 500: '#2F6BFF', 600: '#1A53E6', 700: '#1642B8',
@@ -35,14 +36,18 @@
         h1, h2, h3, h4 { line-height: 1.3; }
 
         .dot-grid {
-            background-image: radial-gradient(#C9D3E0 1px, transparent 1px);
+            background-image: radial-gradient(#1A2740 1px, transparent 1px);
             background-size: 22px 22px;
         }
-        .lang-btn { color: #475569; }
-        .lang-btn[aria-pressed="true"] { background: #0E1B2F; color: #fff; }
+        .hero-glow {
+            background: radial-gradient(680px 340px at 28% 18%, rgba(47,107,255,.16), transparent 70%),
+                        radial-gradient(520px 300px at 85% 70%, rgba(139,92,246,.10), transparent 70%);
+        }
+        .lang-btn { color: #94A3B8; }
+        .lang-btn[aria-pressed="true"] { background: #2F6BFF; color: #fff; }
 
         .upload-zone { transition: border-color .2s, background-color .2s; }
-        .upload-zone.dragover { border-color: #2F6BFF; background: #EEF4FF; }
+        .upload-zone.dragover { border-color: #5A8DFF; background: rgba(47,107,255,.10); }
 
         /* animate only the single hero scene, once */
         .mask-in { animation: maskIn .9s ease-out .2s both; }
@@ -54,45 +59,45 @@
         }
     </style>
 </head>
-<body class="bg-paper text-ink antialiased">
+<body class="bg-paper text-slate-100 antialiased">
 
     <!-- ===== NAV ===== -->
-    <header class="fixed top-0 inset-x-0 z-50 bg-white/85 backdrop-blur border-b border-line">
+    <header class="fixed top-0 inset-x-0 z-50 bg-paper/85 backdrop-blur border-b border-line">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <a href="#" class="flex items-center gap-2.5 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
-                    <span class="w-8 h-8 rounded-lg bg-ink flex items-center justify-center">
+                    <span class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center">
                         <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true">
                             <path d="M4 15l4-9 7 3 5 7-7 4z"/>
                         </svg>
                     </span>
-                    <span class="text-lg font-bold">PolyDetect</span>
+                    <span class="text-lg font-bold text-white">PolyDetect</span>
                 </a>
 
                 <nav class="hidden md:flex items-center gap-8" aria-label="Main">
-                    <a href="#features" data-i18n="nav_features" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors"></a>
-                    <a href="#about" data-i18n="nav_about" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors"></a>
-                    <div class="inline-flex rounded-lg border border-line bg-white p-0.5 text-xs font-semibold" role="group" aria-label="Language">
+                    <a href="#features" data-i18n="nav_features" class="text-sm font-medium text-slate-400 hover:text-brand-400 transition-colors"></a>
+                    <a href="#about" data-i18n="nav_about" class="text-sm font-medium text-slate-400 hover:text-brand-400 transition-colors"></a>
+                    <div class="inline-flex rounded-lg border border-line bg-panel p-0.5 text-xs font-semibold" role="group" aria-label="Language">
                         <button type="button" data-lang="th" class="lang-btn px-3 py-1.5 rounded-md transition-colors" aria-pressed="true">TH</button>
                         <button type="button" data-lang="en" class="lang-btn px-3 py-1.5 rounded-md transition-colors" aria-pressed="false">EN</button>
                     </div>
-                    <a href="#try" data-i18n="nav_cta" class="px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700 transition-colors"></a>
+                    <a href="#try" data-i18n="nav_cta" class="px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-500 transition-colors"></a>
                 </nav>
 
-                <button id="mobileMenuBtn" type="button" class="md:hidden p-2 -mr-2 rounded-lg hover:bg-slate-100" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+                <button id="mobileMenuBtn" type="button" class="md:hidden p-2 -mr-2 rounded-lg hover:bg-slate-800" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
                 </button>
             </div>
         </div>
-        <div id="mobileMenu" class="md:hidden hidden border-t border-line bg-white">
+        <div id="mobileMenu" class="md:hidden hidden border-t border-line bg-paper">
             <div class="px-4 py-4 space-y-1">
-                <a href="#features" data-i18n="nav_features" class="mobile-link block px-3 py-2.5 rounded-lg text-slate-700 hover:bg-slate-50"></a>
-                <a href="#about" data-i18n="nav_about" class="mobile-link block px-3 py-2.5 rounded-lg text-slate-700 hover:bg-slate-50"></a>
-                <a href="#try" data-i18n="nav_cta" class="mobile-link block px-3 py-2.5 rounded-lg text-brand-700 font-medium hover:bg-brand-50"></a>
+                <a href="#features" data-i18n="nav_features" class="mobile-link block px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800"></a>
+                <a href="#about" data-i18n="nav_about" class="mobile-link block px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800"></a>
+                <a href="#try" data-i18n="nav_cta" class="mobile-link block px-3 py-2.5 rounded-lg text-brand-400 font-medium hover:bg-slate-800"></a>
                 <div class="pt-3 px-3">
-                    <div class="inline-flex rounded-lg border border-line bg-white p-0.5 text-xs font-semibold" role="group" aria-label="Language">
+                    <div class="inline-flex rounded-lg border border-line bg-panel p-0.5 text-xs font-semibold" role="group" aria-label="Language">
                         <button type="button" data-lang="th" class="lang-btn px-4 py-2 rounded-md" aria-pressed="true">TH</button>
                         <button type="button" data-lang="en" class="lang-btn px-4 py-2 rounded-md" aria-pressed="false">EN</button>
                     </div>
@@ -103,21 +108,21 @@
 
     <main>
     <!-- ===== HERO ===== -->
-    <section class="dot-grid pt-28 pb-16 md:pt-36 md:pb-24 px-4 sm:px-6 lg:px-8">
+    <section class="dot-grid hero-glow pt-28 pb-16 md:pt-36 md:pb-24 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 lg:gap-10 items-center">
             <div class="lg:col-span-6">
-                <h1 data-i18n="hero_title" class="text-3xl sm:text-4xl lg:text-5xl font-bold"></h1>
-                <p data-i18n="hero_desc" class="mt-6 text-base md:text-lg text-slate-600 leading-relaxed max-w-xl"></p>
+                <h1 data-i18n="hero_title" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white"></h1>
+                <p data-i18n="hero_desc" class="mt-6 text-base md:text-lg text-slate-400 leading-relaxed max-w-xl"></p>
                 <div class="mt-8 flex flex-col sm:flex-row gap-3">
-                    <a href="#try" data-i18n="hero_cta" class="px-7 py-3.5 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 transition-colors text-center"></a>
-                    <a href="#features" data-i18n="hero_cta2" class="px-7 py-3.5 bg-white border border-slate-300 text-ink font-semibold rounded-xl hover:border-ink transition-colors text-center"></a>
+                    <a href="#try" data-i18n="hero_cta" class="px-7 py-3.5 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-500 transition-colors text-center shadow-lg shadow-brand-600/25"></a>
+                    <a href="#features" data-i18n="hero_cta2" class="px-7 py-3.5 bg-transparent border border-slate-700 text-slate-100 font-semibold rounded-xl hover:border-slate-400 hover:bg-slate-800/50 transition-colors text-center"></a>
                 </div>
                 <p data-i18n="hero_note" class="mt-5 text-sm text-slate-500"></p>
             </div>
 
             <!-- Segmentation illustration -->
             <div class="lg:col-span-6">
-                <figure class="rounded-2xl overflow-hidden bg-ink shadow-xl ring-1 ring-ink/10">
+                <figure class="rounded-2xl overflow-hidden bg-ink shadow-xl ring-1 ring-white/5">
                     <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-3 text-xs text-slate-300 border-b border-white/10">
                         <figcaption data-i18n="scene_caption"></figcaption>
                         <div class="flex items-center gap-4">
@@ -186,23 +191,23 @@
     </section>
 
     <!-- ===== STATS ===== -->
-    <section class="bg-white border-y border-line">
+    <section class="bg-panel border-y border-line">
         <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 divide-line md:divide-x">
             <div class="px-6 py-8 text-center border-b md:border-b-0 border-line">
-                <div class="text-3xl md:text-4xl font-bold">3</div>
-                <div data-i18n="stat_classes" class="text-sm text-slate-500 mt-1"></div>
+                <div class="text-3xl md:text-4xl font-bold text-white">3</div>
+                <div data-i18n="stat_classes" class="text-sm text-slate-400 mt-1"></div>
             </div>
             <div class="px-6 py-8 text-center border-b md:border-b-0 border-l md:border-l-0 border-line">
-                <div class="text-3xl md:text-4xl font-bold">0.66</div>
-                <div class="text-sm text-slate-500 mt-1">mAP50 (Mask)</div>
+                <div class="text-3xl md:text-4xl font-bold text-brand-400">0.66</div>
+                <div class="text-sm text-slate-400 mt-1">mAP50 (Mask)</div>
             </div>
             <div class="px-6 py-8 text-center">
-                <div class="text-3xl md:text-4xl font-bold">771</div>
-                <div data-i18n="stat_val" class="text-sm text-slate-500 mt-1"></div>
+                <div class="text-3xl md:text-4xl font-bold text-white">771</div>
+                <div data-i18n="stat_val" class="text-sm text-slate-400 mt-1"></div>
             </div>
             <div class="px-6 py-8 text-center border-l md:border-l-0 border-line">
-                <div class="text-3xl md:text-4xl font-bold">6.3<span class="text-lg font-semibold ml-0.5">MB</span></div>
-                <div data-i18n="stat_size" class="text-sm text-slate-500 mt-1"></div>
+                <div class="text-3xl md:text-4xl font-bold text-white">6.3<span class="text-lg font-semibold ml-0.5">MB</span></div>
+                <div data-i18n="stat_size" class="text-sm text-slate-400 mt-1"></div>
             </div>
         </div>
     </section>
@@ -211,35 +216,35 @@
     <section id="features" class="py-20 md:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-16">
         <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-10 lg:gap-16">
             <div class="lg:col-span-5">
-                <h2 data-i18n="feat_title" class="text-2xl md:text-4xl font-bold"></h2>
-                <p data-i18n="feat_desc" class="mt-4 text-slate-600 text-base md:text-lg leading-relaxed"></p>
+                <h2 data-i18n="feat_title" class="text-2xl md:text-4xl font-bold text-white"></h2>
+                <p data-i18n="feat_desc" class="mt-4 text-slate-400 text-base md:text-lg leading-relaxed"></p>
             </div>
             <div class="lg:col-span-7 divide-y divide-line border-y border-line">
                 <div class="flex gap-5 py-7">
-                    <div class="shrink-0 w-11 h-11 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center">
+                    <div class="shrink-0 w-11 h-11 rounded-xl bg-brand-500/15 text-brand-400 flex items-center justify-center">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
                     <div>
-                        <h3 data-i18n="f1_title" class="text-lg font-semibold"></h3>
-                        <p data-i18n="f1_desc" class="mt-1.5 text-slate-600 leading-relaxed"></p>
+                        <h3 data-i18n="f1_title" class="text-lg font-semibold text-white"></h3>
+                        <p data-i18n="f1_desc" class="mt-1.5 text-slate-400 leading-relaxed"></p>
                     </div>
                 </div>
                 <div class="flex gap-5 py-7">
-                    <div class="shrink-0 w-11 h-11 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center">
+                    <div class="shrink-0 w-11 h-11 rounded-xl bg-brand-500/15 text-brand-400 flex items-center justify-center">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                     </div>
                     <div>
-                        <h3 data-i18n="f2_title" class="text-lg font-semibold"></h3>
-                        <p data-i18n="f2_desc" class="mt-1.5 text-slate-600 leading-relaxed"></p>
+                        <h3 data-i18n="f2_title" class="text-lg font-semibold text-white"></h3>
+                        <p data-i18n="f2_desc" class="mt-1.5 text-slate-400 leading-relaxed"></p>
                     </div>
                 </div>
                 <div class="flex gap-5 py-7">
-                    <div class="shrink-0 w-11 h-11 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center">
+                    <div class="shrink-0 w-11 h-11 rounded-xl bg-brand-500/15 text-brand-400 flex items-center justify-center">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                     </div>
                     <div>
-                        <h3 data-i18n="f3_title" class="text-lg font-semibold"></h3>
-                        <p data-i18n="f3_desc" class="mt-1.5 text-slate-600 leading-relaxed"></p>
+                        <h3 data-i18n="f3_title" class="text-lg font-semibold text-white"></h3>
+                        <p data-i18n="f3_desc" class="mt-1.5 text-slate-400 leading-relaxed"></p>
                     </div>
                 </div>
             </div>
@@ -247,23 +252,23 @@
     </section>
 
     <!-- ===== TRY IT ===== -->
-    <section id="try" class="py-20 md:py-28 px-4 sm:px-6 lg:px-8 bg-white border-y border-line scroll-mt-16">
+    <section id="try" class="py-20 md:py-28 px-4 sm:px-6 lg:px-8 bg-panel border-y border-line scroll-mt-16">
         <div class="max-w-5xl mx-auto">
             <div class="max-w-2xl mb-10">
-                <h2 data-i18n="try_title" class="text-2xl md:text-4xl font-bold"></h2>
-                <p data-i18n="try_desc" class="mt-4 text-slate-600 text-base md:text-lg"></p>
+                <h2 data-i18n="try_title" class="text-2xl md:text-4xl font-bold text-white"></h2>
+                <p data-i18n="try_desc" class="mt-4 text-slate-400 text-base md:text-lg"></p>
             </div>
 
-            <div class="rounded-2xl border border-line bg-paper p-4 sm:p-6 md:p-8">
+            <div class="rounded-2xl border border-line bg-paper p-4 sm:p-6 md:p-8 shadow-2xl shadow-black/30">
                 <!-- Upload zone -->
                 <div id="dropZone" role="button" tabindex="0"
-                     class="upload-zone border-2 border-dashed border-slate-300 bg-white rounded-xl p-8 md:p-14 text-center cursor-pointer hover:border-brand-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
-                    <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-brand-50 flex items-center justify-center">
-                        <svg class="w-7 h-7 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                     class="upload-zone border-2 border-dashed border-slate-700 bg-panel rounded-xl p-8 md:p-14 text-center cursor-pointer hover:border-brand-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
+                    <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-brand-500/15 flex items-center justify-center">
+                        <svg class="w-7 h-7 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                         </svg>
                     </div>
-                    <p data-i18n="drop_title" class="text-base md:text-lg font-medium text-slate-800"></p>
+                    <p data-i18n="drop_title" class="text-base md:text-lg font-medium text-slate-200"></p>
                     <p data-i18n="drop_hint" class="text-sm text-slate-500 mt-1"></p>
                     <input type="file" id="fileInput" accept="image/*" class="hidden">
                 </div>
@@ -271,52 +276,52 @@
                 <!-- Controls -->
                 <div class="mt-6 flex flex-col sm:flex-row sm:items-end gap-5 sm:gap-8">
                     <div class="flex-1 w-full">
-                        <span data-i18n="mode_label" class="block text-sm font-medium text-slate-700 mb-2"></span>
-                        <div role="group" aria-label="draw mode" class="inline-flex w-full sm:w-auto rounded-xl border border-slate-200 bg-slate-100 p-1 gap-1">
-                            <button type="button" data-mode="box" data-i18n="mode_box" class="mode-btn flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 transition-colors"></button>
-                            <button type="button" data-mode="mask" data-i18n="mode_mask" class="mode-btn flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 transition-colors"></button>
-                            <button type="button" data-mode="both" data-i18n="mode_both" class="mode-btn flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 transition-colors"></button>
+                        <span data-i18n="mode_label" class="block text-sm font-medium text-slate-300 mb-2"></span>
+                        <div role="group" aria-label="draw mode" class="inline-flex w-full sm:w-auto rounded-xl border border-slate-700 bg-slate-800/60 p-1 gap-1">
+                            <button type="button" data-mode="box" data-i18n="mode_box" class="mode-btn flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-slate-200 transition-colors"></button>
+                            <button type="button" data-mode="mask" data-i18n="mode_mask" class="mode-btn flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-slate-200 transition-colors"></button>
+                            <button type="button" data-mode="both" data-i18n="mode_both" class="mode-btn flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-lg text-slate-400 hover:text-slate-200 transition-colors"></button>
                         </div>
                     </div>
                     <div class="flex-1 w-full">
-                        <label for="confSlider" class="flex items-center justify-between text-sm font-medium text-slate-700 mb-2">
+                        <label for="confSlider" class="flex items-center justify-between text-sm font-medium text-slate-300 mb-2">
                             <span data-i18n="conf_label"></span>
-                            <span id="confValue" class="text-brand-700 font-bold">0.25</span>
+                            <span id="confValue" class="text-brand-400 font-bold">0.25</span>
                         </label>
                         <input type="range" id="confSlider" min="0.05" max="0.95" step="0.05" value="0.25"
-                               class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-600">
+                               class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-brand-500">
                     </div>
                     <button id="predictBtn" type="button" disabled
-                            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+                            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-500 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-lg shadow-brand-600/25">
                         <span id="predictSpinner" class="hidden w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin"></span>
                         <span id="predictLabel"></span>
                     </button>
                 </div>
 
                 <!-- Error -->
-                <div id="errorBox" role="alert" class="hidden mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"></div>
+                <div id="errorBox" role="alert" class="hidden mt-6 rounded-xl border border-red-800 bg-red-950/50 px-4 py-3 text-sm text-red-300"></div>
 
                 <!-- Preview + Result -->
                 <div id="resultArea" class="hidden mt-8">
                     <div class="grid md:grid-cols-2 gap-6">
                         <div>
                             <div class="flex items-center justify-between gap-3 mb-3">
-                                <h3 data-i18n="res_original" class="font-semibold text-slate-700"></h3>
-                                <span id="fileName" class="text-xs text-slate-400 truncate max-w-[55%]"></span>
+                                <h3 data-i18n="res_original" class="font-semibold text-slate-200"></h3>
+                                <span id="fileName" class="text-xs text-slate-500 truncate max-w-[55%]"></span>
                             </div>
-                            <img id="previewImg" class="w-full rounded-xl border border-line bg-white" alt="preview">
+                            <img id="previewImg" class="w-full rounded-xl border border-line bg-slate-900" alt="preview">
                         </div>
                         <div>
                             <div class="flex items-center justify-between gap-3 mb-3">
-                                <h3 data-i18n="res_result" class="font-semibold text-slate-700"></h3>
-                                <span id="detectCount" class="hidden px-2.5 py-1 bg-brand-50 text-brand-700 text-xs font-medium rounded-full"></span>
+                                <h3 data-i18n="res_result" class="font-semibold text-slate-200"></h3>
+                                <span id="detectCount" class="hidden px-2.5 py-1 bg-brand-500/15 text-brand-300 text-xs font-medium rounded-full"></span>
                             </div>
-                            <div class="relative rounded-xl border border-line bg-white overflow-hidden min-h-[160px]">
+                            <div class="relative rounded-xl border border-line bg-slate-900 overflow-hidden min-h-[160px]">
                                 <img id="resultImg" class="hidden w-full" alt="result">
-                                <div id="resultPlaceholder" data-i18n="res_placeholder" class="absolute inset-0 flex items-center justify-center p-6 text-center text-sm text-slate-400"></div>
-                                <div id="loading" class="hidden absolute inset-0 bg-white/85 flex flex-col items-center justify-center gap-3">
-                                    <div class="w-10 h-10 border-4 border-brand-100 border-t-brand-600 rounded-full animate-spin"></div>
-                                    <p data-i18n="loading" class="text-sm text-slate-600"></p>
+                                <div id="resultPlaceholder" data-i18n="res_placeholder" class="absolute inset-0 flex items-center justify-center p-6 text-center text-sm text-slate-500"></div>
+                                <div id="loading" class="hidden absolute inset-0 bg-slate-950/85 flex flex-col items-center justify-center gap-3">
+                                    <div class="w-10 h-10 border-4 border-slate-700 border-t-brand-500 rounded-full animate-spin"></div>
+                                    <p data-i18n="loading" class="text-sm text-slate-300"></p>
                                 </div>
                             </div>
                         </div>
@@ -324,10 +329,10 @@
 
                     <!-- Detections table -->
                     <div id="detectionsWrap" class="hidden mt-8">
-                        <h3 data-i18n="det_title" class="font-semibold text-slate-700 mb-3"></h3>
-                        <div class="overflow-x-auto rounded-xl border border-line bg-white">
+                        <h3 data-i18n="det_title" class="font-semibold text-slate-200 mb-3"></h3>
+                        <div class="overflow-x-auto rounded-xl border border-line bg-slate-900">
                             <table class="w-full text-sm">
-                                <thead class="bg-slate-50 text-slate-500">
+                                <thead class="bg-slate-800/70 text-slate-400">
                                     <tr>
                                         <th class="px-4 py-3 text-left font-medium">#</th>
                                         <th data-i18n="th_class" class="px-4 py-3 text-left font-medium"></th>
@@ -348,66 +353,66 @@
     <section id="about" class="py-20 md:py-28 px-4 sm:px-6 lg:px-8 scroll-mt-16">
         <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
             <div>
-                <h2 data-i18n="about_title" class="text-2xl md:text-4xl font-bold"></h2>
-                <p data-i18n="about_desc" class="mt-4 text-slate-600 leading-relaxed"></p>
+                <h2 data-i18n="about_title" class="text-2xl md:text-4xl font-bold text-white"></h2>
+                <p data-i18n="about_desc" class="mt-4 text-slate-400 leading-relaxed"></p>
                 <dl class="mt-8 divide-y divide-line border-y border-line">
                     <div class="flex items-center justify-between gap-4 py-5">
                         <div>
-                            <dt data-i18n="ab_train" class="font-semibold"></dt>
-                            <dd data-i18n="ab_train_d" class="text-sm text-slate-500 mt-0.5"></dd>
+                            <dt data-i18n="ab_train" class="font-semibold text-white"></dt>
+                            <dd data-i18n="ab_train_d" class="text-sm text-slate-400 mt-0.5"></dd>
                         </div>
-                        <div data-i18n="ab_train_n" class="text-xl font-bold text-brand-700 whitespace-nowrap"></div>
+                        <div data-i18n="ab_train_n" class="text-xl font-bold text-brand-400 whitespace-nowrap"></div>
                     </div>
                     <div class="flex items-center justify-between gap-4 py-5">
                         <div>
-                            <dt data-i18n="ab_val" class="font-semibold"></dt>
-                            <dd data-i18n="ab_val_d" class="text-sm text-slate-500 mt-0.5"></dd>
+                            <dt data-i18n="ab_val" class="font-semibold text-white"></dt>
+                            <dd data-i18n="ab_val_d" class="text-sm text-slate-400 mt-0.5"></dd>
                         </div>
-                        <div data-i18n="ab_val_n" class="text-xl font-bold text-brand-700 whitespace-nowrap"></div>
+                        <div data-i18n="ab_val_n" class="text-xl font-bold text-brand-400 whitespace-nowrap"></div>
                     </div>
                     <div class="flex items-center justify-between gap-4 py-5">
                         <div>
-                            <dt class="font-semibold">mAP50 (Mask)</dt>
-                            <dd class="text-sm text-slate-500 mt-0.5">mAP50-95 0.401, Precision 0.736</dd>
+                            <dt class="font-semibold text-white">mAP50 (Mask)</dt>
+                            <dd class="text-sm text-slate-400 mt-0.5">mAP50-95 0.401, Precision 0.736</dd>
                         </div>
-                        <div class="text-xl font-bold text-brand-700">0.659</div>
+                        <div class="text-xl font-bold text-brand-400">0.659</div>
                     </div>
                 </dl>
             </div>
 
-            <div class="bg-white rounded-2xl p-6 md:p-8 border border-line">
-                <h3 data-i18n="perf_title" class="font-semibold text-lg mb-6"></h3>
+            <div class="bg-panel rounded-2xl p-6 md:p-8 border border-line">
+                <h3 data-i18n="perf_title" class="font-semibold text-lg mb-6 text-white"></h3>
                 <div class="space-y-5">
                     <div>
                         <div class="flex justify-between text-sm mb-1.5">
-                            <span data-i18n="cls_person" class="font-medium"></span>
-                            <span class="text-slate-500">mAP50 0.688</span>
+                            <span data-i18n="cls_person" class="font-medium text-slate-200"></span>
+                            <span class="text-slate-400">mAP50 0.688</span>
                         </div>
-                        <div class="w-full bg-slate-100 rounded-full h-2.5"><div class="bg-cls-person h-2.5 rounded-full" style="width: 69%"></div></div>
+                        <div class="w-full bg-slate-800 rounded-full h-2.5"><div class="bg-cls-person h-2.5 rounded-full" style="width: 69%"></div></div>
                     </div>
                     <div>
                         <div class="flex justify-between text-sm mb-1.5">
-                            <span data-i18n="cls_car" class="font-medium"></span>
-                            <span class="text-slate-500">mAP50 0.592</span>
+                            <span data-i18n="cls_car" class="font-medium text-slate-200"></span>
+                            <span class="text-slate-400">mAP50 0.592</span>
                         </div>
-                        <div class="w-full bg-slate-100 rounded-full h-2.5"><div class="bg-cls-car h-2.5 rounded-full" style="width: 59%"></div></div>
+                        <div class="w-full bg-slate-800 rounded-full h-2.5"><div class="bg-cls-car h-2.5 rounded-full" style="width: 59%"></div></div>
                     </div>
                     <div>
                         <div class="flex justify-between text-sm mb-1.5">
-                            <span data-i18n="cls_bus" class="font-medium"></span>
-                            <span class="text-slate-500">mAP50 0.725</span>
+                            <span data-i18n="cls_bus" class="font-medium text-slate-200"></span>
+                            <span class="text-slate-400">mAP50 0.725</span>
                         </div>
-                        <div class="w-full bg-slate-100 rounded-full h-2.5"><div class="bg-cls-bus h-2.5 rounded-full" style="width: 73%"></div></div>
+                        <div class="w-full bg-slate-800 rounded-full h-2.5"><div class="bg-cls-bus h-2.5 rounded-full" style="width: 73%"></div></div>
                     </div>
                 </div>
                 <div class="mt-8 pt-6 border-t border-line grid grid-cols-2 gap-4 text-center">
                     <div>
-                        <div class="text-2xl font-bold text-brand-700">0.818</div>
-                        <div class="text-xs text-slate-500 mt-0.5">Box Precision</div>
+                        <div class="text-2xl font-bold text-brand-400">0.818</div>
+                        <div class="text-xs text-slate-400 mt-0.5">Box Precision</div>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold text-brand-700">0.557</div>
-                        <div class="text-xs text-slate-500 mt-0.5">Box Recall</div>
+                        <div class="text-2xl font-bold text-brand-400">0.557</div>
+                        <div class="text-xs text-slate-400 mt-0.5">Box Recall</div>
                     </div>
                 </div>
             </div>
@@ -416,15 +421,15 @@
     </main>
 
     <!-- ===== FOOTER ===== -->
-    <footer class="bg-white border-t border-line py-10 px-4 sm:px-6 lg:px-8">
+    <footer class="bg-panel border-t border-line py-10 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
             <div class="flex items-center gap-2.5">
-                <span class="w-7 h-7 rounded-lg bg-ink flex items-center justify-center">
+                <span class="w-7 h-7 rounded-lg bg-brand-600 flex items-center justify-center">
                     <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 15l4-9 7 3 5 7-7 4z"/></svg>
                 </span>
-                <span class="font-bold">PolyDetect</span>
+                <span class="font-bold text-white">PolyDetect</span>
             </div>
-            <p data-i18n="footer_built" class="text-sm text-slate-500"></p>
+            <p data-i18n="footer_built" class="text-sm text-slate-400"></p>
         </div>
     </footer>
 
@@ -549,9 +554,9 @@
         let lastError = null;  // { raw: string } or { exc: string }
 
         const CLS = {
-            person: { key: 'cls_person', badge: 'bg-green-50 text-green-700', dot: 'bg-cls-person' },
-            car:    { key: 'cls_car',    badge: 'bg-amber-50 text-amber-700', dot: 'bg-cls-car' },
-            bus:    { key: 'cls_bus',    badge: 'bg-red-50 text-red-700',     dot: 'bg-cls-bus' },
+            person: { key: 'cls_person', badge: 'bg-green-500/15 text-green-300', dot: 'bg-cls-person' },
+            car:    { key: 'cls_car',    badge: 'bg-amber-500/15 text-amber-300', dot: 'bg-cls-car' },
+            bus:    { key: 'cls_bus',    badge: 'bg-red-500/15 text-red-300',     dot: 'bg-cls-bus' },
         };
 
         // ---------- render helpers ----------
@@ -584,22 +589,22 @@
             detectionsWrap.classList.remove('hidden');
 
             if (!lastData.detections || lastData.detections.length === 0) {
-                detectionsBody.innerHTML = `<tr><td colspan="4" class="px-4 py-6 text-center text-slate-500">${t('det_empty')}</td></tr>`;
+                detectionsBody.innerHTML = `<tr><td colspan="4" class="px-4 py-6 text-center text-slate-400">${t('det_empty')}</td></tr>`;
                 return;
             }
             detectionsBody.innerHTML = lastData.detections.map((d, i) => {
-                const c = CLS[d.class] || { key: null, badge: 'bg-slate-100 text-slate-700', dot: 'bg-slate-400' };
+                const c = CLS[d.class] || { key: null, badge: 'bg-slate-700 text-slate-200', dot: 'bg-slate-400' };
                 const name = c.key ? t(c.key) : d.class;
                 return `
-                    <tr class="hover:bg-slate-50">
-                        <td class="px-4 py-3 text-slate-400">${i + 1}</td>
+                    <tr class="hover:bg-slate-800/60">
+                        <td class="px-4 py-3 text-slate-500">${i + 1}</td>
                         <td class="px-4 py-3">
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${c.badge}">
                                 <span class="w-2 h-2 rounded-full ${c.dot}"></span>${name}
                             </span>
                         </td>
-                        <td class="px-4 py-3 font-medium text-slate-700">${(d.confidence * 100).toFixed(1)}%</td>
-                        <td class="px-4 py-3 text-slate-500 text-xs whitespace-nowrap">${d.bbox.join(', ')}</td>
+                        <td class="px-4 py-3 font-medium text-slate-200">${(d.confidence * 100).toFixed(1)}%</td>
+                        <td class="px-4 py-3 text-slate-400 text-xs whitespace-nowrap">${d.bbox.join(', ')}</td>
                     </tr>`;
             }).join('');
         }
@@ -649,8 +654,8 @@
         function renderModeBtns() {
             modeBtns.forEach((b) => {
                 const active = b.dataset.mode === drawMode;
-                b.classList.toggle('bg-white', active);
-                b.classList.toggle('text-brand-700', active);
+                b.classList.toggle('bg-brand-600', active);
+                b.classList.toggle('text-white', active);
                 b.classList.toggle('shadow-sm', active);
                 b.classList.toggle('font-semibold', active);
                 b.setAttribute('aria-pressed', String(active));
