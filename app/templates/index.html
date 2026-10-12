@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PolyDetect — Person / Car / Bus Segmentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff', 100: '#e0effe', 200: '#bae0fd',
+                            300: '#7cc8fb', 400: '#38b0f7', 500: '#0e98e8',
+                            600: '#0279c6', 700: '#0360a0', 800: '#075084',
+                            900: '#0b436e', 950: '#072a49',
+                        },
+                    },
+                    fontFamily: {
+                        display: ['"Inter"', 'system-ui', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #0e98e8 0%, #38b0f7 50%, #7cc8fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #072a49 0%, #0b436e 25%, #0360a0 50%, #0279c6 75%, #0e98e8 100%);
+        }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .upload-zone { transition: all 0.2s ease; }
+        .upload-zone.dragover { border-color: #0e98e8; background: #f0f7ff; transform: scale(1.02); }
+        .pulse-dot { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .fade-in { animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased">
+
+    <!-- ===== NAV ===== -->
+    <nav class="fixed top-0 w-full z-50 glass shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="#" class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold">Poly<span class="text-brand-600">Detect</span></span>
+                </a>
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#features" class="text-sm font-medium text-gray-600 hover:text-brand-600 transition">Features</a>
+                    <a href="#try" class="text-sm font-medium text-gray-600 hover:text-brand-600 transition">Try It</a>
+                    <a href="#about" class="text-sm font-medium text-gray-600 hover:text-brand-600 transition">About</a>
+                    <a href="#try" class="px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700 transition shadow-sm">
+                        ลองเลย
+                    </a>
+                </div>
+                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobileMenu" class="md:hidden hidden border-t border-gray-200 bg-white">
+            <div class="px-4 py-3 space-y-2">
+                <a href="#features" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50">Features</a>
+                <a href="#try" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50">Try It</a>
+                <a href="#about" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero-gradient pt-32 pb-20 md:pt-40 md:pb-28 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand-300 rounded-full blur-3xl"></div>
+        </div>
+        <div class="max-w-7xl mx-auto relative">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white/90 text-sm mb-6">
+                    <span class="w-2 h-2 rounded-full bg-green-400 pulse-dot"></span>
+                    YOLOv8n Segmentation · รันบน CPU ได้
+                </div>
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-6">
+                    ตรวจจับ <span class="text-brand-200">Person</span> · <span class="text-brand-200">Car</span> · <span class="text-brand-200">Bus</span><br class="hidden sm:block">
+                    ด้วย <span class="gradient-text bg-gradient-to-r from-brand-200 to-white bg-clip-text">Instance Segmentation</span>
+                </h1>
+                <p class="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">
+                    อัปโหลดรูปภาพ แล้วให้ AI วาดวงกลม (mask) ครอบวัตถุแบบ pixel-level
+                    แม่นยำ รวดเร็ว ใช้งานได้ทันทีบน browser
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#try" class="px-8 py-4 bg-white text-brand-700 font-semibold rounded-xl hover:bg-gray-100 transition shadow-lg hover:shadow-xl text-lg">
+                        🚀 ลองเลยตอนนี้
+                    </a>
+                    <a href="#features" class="px-8 py-4 border-2 border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 transition text-lg">
+                        ดู Features
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== STATS ===== -->
+    <section class="py-12 bg-white border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-brand-600">3</div>
+                    <div class="text-sm text-gray-500 mt-1">Classes</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-brand-600">0.66</div>
+                    <div class="text-sm text-gray-500 mt-1">mAP50 (Mask)</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-brand-600">771</div>
+                    <div class="text-sm text-gray-500 mt-1">Val Instances</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl md:text-4xl font-extrabold text-brand-600">6.3<span class="text-lg">MB</span></div>
+                    <div class="text-sm text-gray-500 mt-1">Model Size</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section id="features" class="py-20 md:py-28 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">ทำไมต้อง <span class="gradient-text">PolyDetect</span>?</h2>
+                <p class="text-gray-600 text-lg">โมเดล segmentation ที่เทรนบน COCO 2017 ใหม่ทั้งหมด ไม่ใช้ข้อมูลเดิม</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-brand-50 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Pixel-Level Accuracy</h3>
+                    <p class="text-gray-600 leading-relaxed">วาดวง mask ครอบวัตถุระดับ pixel ไม่ใช่แค่กล่อง bounding box ทำให้เห็นขอบวัตถุชัดเจน</p>
+                </div>
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-brand-50 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Lightweight & Fast</h3>
+                    <p class="text-gray-600 leading-relaxed">โมเดลขนาด 6.3MB รัน inference บน CPU ได้ ~9ms/image ไม่ต้องมี GPU ก็ใช้งานได้</p>
+                </div>
+                <div class="card-hover bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-brand-50 flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Real COCO Data</h3>
+                    <p class="text-gray-600 leading-relaxed">เทรนบน COCO 2017 (person/car/bus) — 583 train images, ทุก class มี ≥100 objects</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TRY IT ===== -->
+    <section id="try" class="py-20 md:py-28 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">ลองใช้งาน <span class="gradient-text">เลย</span></h2>
+                <p class="text-gray-600 text-lg">อัปโหลดรูปภาพ (jpg/png) แล้วกด Predict</p>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
+                <!-- Upload zone -->
+                <div class="p-6 md:p-8">
+                    <div id="dropZone" class="upload-zone border-2 border-dashed border-gray-300 rounded-2xl p-10 md:p-16 text-center cursor-pointer hover:border-brand-400 hover:bg-brand-50/50">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-brand-50 flex items-center justify-center">
+                            <svg class="w-8 h-8 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                            </svg>
+                        </div>
+                        <p class="text-lg font-medium text-gray-700 mb-1">ลากไฟล์มาวาง หรือกดเพื่อเลือกไฟล์</p>
+                        <p class="text-sm text-gray-400">รองรับ JPG, PNG, WEBP</p>
+                        <input type="file" id="fileInput" accept="image/*" class="hidden">
+                    </div>
+
+                    <!-- Preview + Result -->
+                    <div id="resultArea" class="hidden mt-8">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <h3 class="font-semibold text-gray-700">รูปต้นฉบับ</h3>
+                                    <span id="fileName" class="text-xs text-gray-400 truncate max-w-[150px]"></span>
+                                </div>
+                                <img id="previewImg" class="w-full rounded-xl border border-gray-200 shadow-sm" alt="preview">
+                            </div>
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <h3 class="font-semibold text-gray-700">ผลลัพธ์</h3>
+                                    <span id="detectCount" class="px-2 py-1 bg-brand-50 text-brand-700 text-xs font-medium rounded-full"></span>
+                                </div>
+                                <img id="resultImg" class="w-full rounded-xl border border-gray-200 shadow-sm" alt="result">
+                            </div>
+                        </div>
+
+                        <!-- Detections table -->
+                        <div id="detectionsWrap" class="mt-6">
+                            <h3 class="font-semibold text-gray-700 mb-3">Detections</h3>
+                            <div class="overflow-x-auto rounded-xl border border-gray-200">
+                                <table class="w-full text-sm">
+                                    <thead class="bg-gray-50 text-gray-500">
+                                        <tr>
+                                            <th class="px-4 py-3 text-left font-medium">#</th>
+                                            <th class="px-4 py-3 text-left font-medium">Class</th>
+                                            <th class="px-4 py-3 text-left font-medium">Confidence</th>
+                                            <th class="px-4 py-3 text-left font-medium">BBox (x1,y1,x2,y2)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="detectionsBody" class="divide-y divide-gray-100"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Loading -->
+                    <div id="loading" class="hidden mt-8 text-center py-12">
+                        <div class="w-12 h-12 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin mx-auto mb-4"></div>
+                        <p class="text-gray-500">กำลังประมวลผล...</p>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="mt-8 flex flex-col sm:flex-row items-center gap-6">
+                        <div class="flex-1 w-full">
+                            <label class="flex items-center justify-between text-sm font-medium text-gray-700 mb-2">
+                                <span>Confidence Threshold</span>
+                                <span id="confValue" class="text-brand-600 font-bold">0.25</span>
+                            </label>
+                            <input type="range" id="confSlider" min="0.05" max="0.95" step="0.05" value="0.25"
+                                   class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-600">
+                        </div>
+                        <button id="predictBtn" disabled
+                                class="w-full sm:w-auto px-8 py-3 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 disabled:opacity-40 disabled:cursor-not-allowed transition shadow-sm">
+                            🔍 Predict
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ABOUT ===== -->
+    <section id="about" class="py-20 md:py-28 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">เกี่ยวกับ <span class="gradient-text">โมเดล</span></h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">
+                        PolyDetect ใช้ <strong>YOLOv8n-seg</strong> ที่เทรนบน <strong>COCO 2017</strong> dataset (ใหม่ทั้งหมด ไม่ใช้ข้อมูลเดิม)
+                        โดยเลือกเฉพาะภาพที่มี <strong>person / car / bus</strong> มา fine-tune
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Train: 583 ภาพ</h4>
+                                <p class="text-sm text-gray-500">person 1,730 · car 395 · bus 193 objects</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Val: 194 ภาพ</h4>
+                                <p class="text-sm text-gray-500">person 604 · car 108 · bus 59 objects</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">mAP50 = 0.659 (Mask)</h4>
+                                <p class="text-sm text-gray-500">mAP50-95 = 0.401 · Precision = 0.736</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
+                    <h3 class="font-semibold text-lg mb-4">Performance per Class</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="font-medium">Person</span>
+                                <span class="text-gray-500">mAP50: 0.688</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-2.5">
+                                <div class="bg-green-500 h-2.5 rounded-full" style="width: 69%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="font-medium">Car</span>
+                                <span class="text-gray-500">mAP50: 0.592</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-2.5">
+                                <div class="bg-orange-500 h-2.5 rounded-full" style="width: 59%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="font-medium">Bus</span>
+                                <span class="text-gray-500">mAP50: 0.725</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-2.5">
+                                <div class="bg-red-500 h-2.5 rounded-full" style="width: 73%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-gray-100">
+                        <div class="grid grid-cols-2 gap-4 text-center">
+                            <div>
+                                <div class="text-2xl font-bold text-brand-600">0.818</div>
+                                <div class="text-xs text-gray-500">Box Precision</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-brand-600">0.557</div>
+                                <div class="text-xs text-gray-500">Box Recall</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="bg-white border-t border-gray-200 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                </div>
+                <span class="font-bold">PolyDetect</span>
+            </div>
+            <p class="text-sm text-gray-500">Built with YOLOv8n-seg · FastAPI · Tailwind CSS</p>
+            <p class="text-sm text-gray-400">ML Lab Project 2026</p>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+        // Mobile menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        });
+
+        // Conf slider
+        const confSlider = document.getElementById('confSlider');
+        const confValue = document.getElementById('confValue');
+        confSlider.addEventListener('input', () => {
+            confValue.textContent = confSlider.value;
+        });
+
+        // Upload zone
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const predictBtn = document.getElementById('predictBtn');
+        let selectedFile = null;
+
+        dropZone.addEventListener('click', () => fileInput.click());
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                selectedFile = file;
+                showPreview(file);
+            }
+        });
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            if (file) {
+                selectedFile = file;
+                showPreview(file);
+            }
+        });
+
+        function showPreview(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('resultImg').src = '';
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('resultArea').classList.remove('hidden');
+                document.getElementById('loading').classList.add('hidden');
+                predictBtn.disabled = false;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Predict
+        predictBtn.addEventListener('click', async () => {
+            if (!selectedFile) return;
+            const conf = confSlider.value;
+            document.getElementById('loading').classList.remove('hidden');
+            predictBtn.disabled = true;
+            predictBtn.textContent = '⏳ กำลังทำนาย...';
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('conf', conf);
+
+            try {
+                const res = await fetch('/predict', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+                document.getElementById('resultImg').src = data.image;
+                document.getElementById('detectCount').textContent = `${data.count} objects`;
+                const tbody = document.getElementById('detectionsBody');
+                tbody.innerHTML = data.detections.map((d, i) => `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-3 text-gray-400">${i + 1}</td>
+                        <td class="px-4 py-3">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium
+                                ${d.class === 'person' ? 'bg-green-50 text-green-700' : d.class === 'car' ? 'bg-orange-50 text-orange-700' : 'bg-red-50 text-red-700'}">
+                                <span class="w-2 h-2 rounded-full ${d.class === 'person' ? 'bg-green-500' : d.class === 'car' ? 'bg-orange-500' : 'bg-red-500'}"></span>
+                                ${d.class}
+                            </span>
+                        </td>
+                        <td class="px-4 py-3 font-medium text-gray-700">${(d.confidence * 100).toFixed(1)}%</td>
+                        <td class="px-4 py-3 text-gray-500 font-mono text-xs">${d.bbox.join(', ')}</td>
+                    </tr>
+                `).join('');
+            } catch (err) {
+                alert('เกิดข้อผิดพลาด: ' + err.message);
+            } finally {
+                document.getElementById('loading').classList.add('hidden');
+                predictBtn.disabled = false;
+                predictBtn.textContent = '🔍 Predict';
+            }
+        });
+    </script>
+</body>
+</html>

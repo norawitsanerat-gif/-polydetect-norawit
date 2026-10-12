@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual env
+.venv/
+venv/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+dataset/coco_raw/
+dataset/coco_rec/
+dataset/coco_poly/
+runs/detect/
+runs/segment/
+output/phase2/
+output/phase3/
+output/train_results/
+output/predict/
+*.pt
+!app/*.pt
+!output/weights/*.pt
+*.zip
+*.log
+*.err
