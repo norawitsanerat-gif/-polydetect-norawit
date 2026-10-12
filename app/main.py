@@ -34,33 +34,36 @@ def get_model():
 CLASSES = ["person", "car", "bus"]
 COLORS_BGR = {"person": (60, 180, 75), "car": (255, 140, 0), "bus": (230, 60, 60)}
 
-def draw_masks(image_bgr, result, conf_thres):
+def draw_masks(image_bgr, result, conf_thres, mode="both"):
     out = image_bgr.copy()
     overlay = out.copy()
     detections = []
     names = result.names
-    for box in result.boxes:
+    draw_mask = mode in ("mask", "both")
+    draw_box = mode in ("box", "both")
+    for i, box in enumerate(result.boxes):
         conf = float(box.conf[0])
         if conf < conf_thres:
             continue
         cls_id = int(box.cls[0])
         name = names[cls_id]
         color = COLORS_BGR.get(name, (200, 200, 200))
-        if result.masks is not None:
-            for poly in result.masks.xy:
-                pts = poly.astype(np.int32).reshape(-1, 1, 2)
-                cv2.fillPoly(overlay, [pts], color)
-                cv2.polylines(out, [pts], True, color, 2)
+        if draw_mask and result.masks is not None and i < len(result.masks.xy):
+            pts = result.masks.xy[i].astype(np.int32).reshape(-1, 1, 2)
+            cv2.fillPoly(overlay, [pts], color)
+            cv2.polylines(out, [pts], True, color, 2)
         x0, y0, x1, y1 = map(int, box.xyxy[0])
         label = f"{name} {conf:.2f}"
         (tw, th), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 1)
         cv2.rectangle(out, (x0, y0 - th - 8), (x0 + tw + 4, y0), color, -1)
         cv2.putText(out, label, (x0 + 2, y0 - 6), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 1, cv2.LINE_AA)
-        cv2.rectangle(out, (x0, y0), (x1, y1), color, 2)
+        if draw_box:
+            cv2.rectangle(out, (x0, y0), (x1, y1), color, 2)
         detections.append({"class": name, "confidence": round(conf, 4),
                            "bbox": [x0, y0, x1, y1]})
-    alpha = 0.35
-    cv2.addWeighted(overlay, alpha, out, 1 - alpha, 0, out)
+    if draw_mask:
+        alpha = 0.35
+        cv2.addWeighted(overlay, alpha, out, 1 - alpha, 0, out)
     return out, detections
 
 # ---------- pages ----------
@@ -74,7 +77,10 @@ async def index(request: Request):
 async def predict(
     file: UploadFile = File(...),
     conf: float = Form(0.25),
+    mode: str = Form("both"),
 ):
+    if mode not in ("box", "mask", "both"):
+        mode = "both"
     contents = await file.read()
     img_arr = np.frombuffer(contents, np.uint8)
     img = cv2.imdecode(img_arr, cv2.IMREAD_COLOR)
@@ -83,7 +89,7 @@ async def predict(
 
     model = get_model()
     result = model.predict(img, imgsz=640, device="cpu", verbose=False)[0]
-    vis, detections = draw_masks(img, result, conf)
+    vis, detections = draw_masks(img, result, conf, mode)
 
     _, buf = cv2.imencode(".jpg", vis, [cv2.IMWRITE_JPEG_QUALITY, 92])
     b64 = base64.b64encode(buf.tobytes()).decode("utf-8")

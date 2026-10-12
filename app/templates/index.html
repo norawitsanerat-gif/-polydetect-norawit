@@ -271,6 +271,14 @@
                 <!-- Controls -->
                 <div class="mt-6 flex flex-col sm:flex-row sm:items-end gap-5 sm:gap-8">
                     <div class="flex-1 w-full">
+                        <span data-i18n="mode_label" class="block text-sm font-medium text-slate-700 mb-2"></span>
+                        <div role="group" aria-label="draw mode" class="inline-flex w-full sm:w-auto rounded-xl border border-slate-200 bg-slate-100 p-1 gap-1">
+                            <button type="button" data-mode="box" data-i18n="mode_box" class="mode-btn flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 transition-colors"></button>
+                            <button type="button" data-mode="mask" data-i18n="mode_mask" class="mode-btn flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 transition-colors"></button>
+                            <button type="button" data-mode="both" data-i18n="mode_both" class="mode-btn flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-lg text-slate-600 hover:text-slate-900 transition-colors"></button>
+                        </div>
+                    </div>
+                    <div class="flex-1 w-full">
                         <label for="confSlider" class="flex items-center justify-between text-sm font-medium text-slate-700 mb-2">
                             <span data-i18n="conf_label"></span>
                             <span id="confValue" class="text-brand-700 font-bold">0.25</span>
@@ -448,6 +456,10 @@
                 drop_title: 'ลากรูปมาวางที่นี่ หรือกดเพื่อเลือกไฟล์',
                 drop_hint: 'รองรับ JPG, PNG, WEBP',
                 conf_label: 'ค่าความมั่นใจขั้นต่ำ',
+                mode_label: 'รูปแบบการแสดงผล',
+                mode_box: 'กรอบ',
+                mode_mask: 'Mask',
+                mode_both: 'ทั้งสองแบบ',
                 btn_predict: 'ตรวจจับวัตถุ', btn_loading: 'กำลังตรวจจับ...',
                 res_original: 'รูปต้นฉบับ', res_result: 'ผลลัพธ์',
                 res_placeholder: 'ผลลัพธ์จะแสดงที่นี่หลังกดตรวจจับวัตถุ',
@@ -488,6 +500,10 @@
                 drop_title: 'Drag an image here or click to choose a file',
                 drop_hint: 'Supports JPG, PNG, WEBP',
                 conf_label: 'Confidence threshold',
+                mode_label: 'Display mode',
+                mode_box: 'Box',
+                mode_mask: 'Mask',
+                mode_both: 'Both',
                 btn_predict: 'Detect objects', btn_loading: 'Detecting...',
                 res_original: 'Original', res_result: 'Result',
                 res_placeholder: 'The result appears here after you run detection',
@@ -630,6 +646,24 @@
         // ---------- slider ----------
         confSlider.addEventListener('input', () => { confValue.textContent = confSlider.value; });
 
+        // ---------- draw mode ----------
+        let drawMode = 'both';
+        const modeBtns = document.querySelectorAll('.mode-btn');
+        function renderModeBtns() {
+            modeBtns.forEach((b) => {
+                const active = b.dataset.mode === drawMode;
+                b.classList.toggle('bg-white', active);
+                b.classList.toggle('text-brand-700', active);
+                b.classList.toggle('shadow-sm', active);
+                b.classList.toggle('font-semibold', active);
+                b.setAttribute('aria-pressed', String(active));
+            });
+        }
+        modeBtns.forEach((b) => {
+            b.addEventListener('click', () => { drawMode = b.dataset.mode; renderModeBtns(); });
+        });
+        renderModeBtns();
+
         // ---------- upload ----------
         dropZone.addEventListener('click', () => fileInput.click());
         dropZone.addEventListener('keydown', (e) => {
@@ -683,6 +717,7 @@
             const formData = new FormData();
             formData.append('file', selectedFile);
             formData.append('conf', confSlider.value);
+            formData.append('mode', drawMode);
 
             try {
                 const res = await fetch('/predict', { method: 'POST', body: formData });
