@@ -16,9 +16,14 @@ from starlette.requests import Request
 from ultralytics import YOLO
 
 ROOT = Path(__file__).parent
-WEIGHTS = ROOT.parent / "runs" / "segment" / "coco_poly" / "weights" / "best.pt"
-if not WEIGHTS.exists():
-    WEIGHTS = ROOT.parent / "output" / "weights" / "best_poly_segment.pt"
+# Weights from the latest training (yolo2tr.ipynb -> output/final/weights).
+# app/best_poly_segment.pt is the copy shipped with the web app (used on Render).
+_CANDIDATES = [
+    ROOT / "best_poly_segment.pt",
+    ROOT.parent / "output" / "final" / "weights" / "best_poly_segment.pt",
+    ROOT.parent / "runs" / "segment" / "poly_stage1" / "weights" / "best.pt",
+]
+WEIGHTS = next((p for p in _CANDIDATES if p.exists()), _CANDIDATES[0])
 
 app = FastAPI(title="PolyDetect", version="1.0")
 
@@ -31,7 +36,7 @@ def get_model():
         _model = YOLO(str(WEIGHTS))
     return _model
 
-CLASSES = ["person", "car", "bus"]
+CLASSES = ["Person", "Car", "Bus"]
 COLORS_BGR = {"person": (60, 180, 75), "car": (255, 140, 0), "bus": (230, 60, 60)}
 
 def draw_masks(image_bgr, result, conf_thres, mode="both"):
@@ -47,7 +52,7 @@ def draw_masks(image_bgr, result, conf_thres, mode="both"):
             continue
         cls_id = int(box.cls[0])
         name = names[cls_id]
-        color = COLORS_BGR.get(name, (200, 200, 200))
+        color = COLORS_BGR.get(name.lower(), (200, 200, 200))
         if draw_mask and result.masks is not None and i < len(result.masks.xy):
             pts = result.masks.xy[i].astype(np.int32).reshape(-1, 1, 2)
             cv2.fillPoly(overlay, [pts], color)
