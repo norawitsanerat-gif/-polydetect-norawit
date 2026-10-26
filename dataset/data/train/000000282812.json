@@ -1,0 +1,52 @@
+{
+  "version": "2.4.0",
+  "flags": {},
+  "shapes": [
+    {
+      "label": "Bus",
+      "points": [
+        [
+          629.77,
+          295.9
+        ],
+        [
+          640.0,
+          292.94
+        ],
+        [
+          640.0,
+          326.95
+        ],
+        [
+          640.0,
+          331.08
+        ],
+        [
+          629.77,
+          331.08
+        ],
+        [
+          629.39,
+          328.24
+        ],
+        [
+          629.0,
+          306.34
+        ],
+        [
+          629.39,
+          298.74
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "shape_type": "polygon",
+      "flags": {},
+      "mask": null
+    }
+  ],
+  "imagePath": "000000282812.jpg",
+  "imageData": null,
+  "imageHeight": 423,
+  "imageWidth": 640
+}

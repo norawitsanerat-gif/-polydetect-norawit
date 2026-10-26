@@ -1,0 +1,36 @@
+{
+  "version": "2.4.0",
+  "flags": {},
+  "shapes": [
+    {
+      "label": "Bus",
+      "points": [
+        [
+          0.82,
+          89.35
+        ],
+        [
+          113.13,
+          102.47
+        ],
+        [
+          114.77,
+          154.11
+        ],
+        [
+          0.82,
+          157.39
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "shape_type": "polygon",
+      "flags": {},
+      "mask": null
+    }
+  ],
+  "imagePath": "000000075557.jpg",
+  "imageData": null,
+  "imageHeight": 332,
+  "imageWidth": 500
+}

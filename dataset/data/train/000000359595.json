@@ -1,0 +1,112 @@
+{
+  "version": "2.4.0",
+  "flags": {},
+  "shapes": [
+    {
+      "label": "Bus",
+      "points": [
+        [
+          305.65,
+          447.71
+        ],
+        [
+          427.26,
+          447.71
+        ],
+        [
+          434.8,
+          471.39
+        ],
+        [
+          295.96,
+          473.54
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "shape_type": "polygon",
+      "flags": {},
+      "mask": null
+    },
+    {
+      "label": "Bus",
+      "points": [
+        [
+          447.71,
+          441.26
+        ],
+        [
+          518.74,
+          445.56
+        ],
+        [
+          521.97,
+          468.16
+        ],
+        [
+          440.18,
+          473.54
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "shape_type": "polygon",
+      "flags": {},
+      "mask": null
+    },
+    {
+      "label": "Car",
+      "points": [
+        [
+          111.57,
+          477.73
+        ],
+        [
+          111.76,
+          463.44
+        ],
+        [
+          120.41,
+          462.5
+        ],
+        [
+          137.15,
+          463.62
+        ],
+        [
+          143.35,
+          466.45
+        ],
+        [
+          148.24,
+          477.16
+        ],
+        [
+          145.99,
+          479.42
+        ],
+        [
+          118.91,
+          480.0
+        ],
+        [
+          111.2,
+          479.04
+        ],
+        [
+          111.76,
+          478.29
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "shape_type": "polygon",
+      "flags": {},
+      "mask": null
+    }
+  ],
+  "imagePath": "000000359595.jpg",
+  "imageData": null,
+  "imageHeight": 480,
+  "imageWidth": 640
+}

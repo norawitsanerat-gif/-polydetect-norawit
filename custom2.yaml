@@ -2,14 +2,14 @@ path: ./dataset/rectrain
 
 train: train/images
 val: val/images
-test: test/images
+test: val/images
 
 nc: 3
 
 names:
-  0: Cat
-  1: Dog
-  2: Tiger
+  0: Person
+  1: Car
+  2: Bus
 
 
 

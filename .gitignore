@@ -25,18 +25,13 @@ ENV/
 Thumbs.db
 
 # Project specific
-dataset/coco_raw/
-dataset/coco_rec/
-dataset/coco_poly/
-runs/detect/
-runs/segment/
+runs/
+dataset/*/labels.cache
 output/phase2/
 output/phase3/
-output/train_results/
-output/predict/
 *.pt
 !app/*.pt
-!output/weights/*.pt
+!output/final/weights/*.pt
 *.zip
 *.log
 *.err

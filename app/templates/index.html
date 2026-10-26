@@ -198,15 +198,15 @@
                 <div data-i18n="stat_classes" class="text-sm text-slate-400 mt-1"></div>
             </div>
             <div class="px-6 py-8 text-center border-b md:border-b-0 border-l md:border-l-0 border-line">
-                <div class="text-3xl md:text-4xl font-bold text-brand-400">0.66</div>
+                <div class="text-3xl md:text-4xl font-bold text-brand-400">0.74</div>
                 <div class="text-sm text-slate-400 mt-1">mAP50 (Mask)</div>
             </div>
             <div class="px-6 py-8 text-center">
-                <div class="text-3xl md:text-4xl font-bold text-white">771</div>
+                <div class="text-3xl md:text-4xl font-bold text-white">166</div>
                 <div data-i18n="stat_val" class="text-sm text-slate-400 mt-1"></div>
             </div>
             <div class="px-6 py-8 text-center border-l md:border-l-0 border-line">
-                <div class="text-3xl md:text-4xl font-bold text-white">6.3<span class="text-lg font-semibold ml-0.5">MB</span></div>
+                <div class="text-3xl md:text-4xl font-bold text-white">6.6<span class="text-lg font-semibold ml-0.5">MB</span></div>
                 <div data-i18n="stat_size" class="text-sm text-slate-400 mt-1"></div>
             </div>
         </div>
@@ -373,9 +373,9 @@
                     <div class="flex items-center justify-between gap-4 py-5">
                         <div>
                             <dt class="font-semibold text-white">mAP50 (Mask)</dt>
-                            <dd class="text-sm text-slate-400 mt-0.5">mAP50-95 0.401, Precision 0.736</dd>
+                            <dd class="text-sm text-slate-400 mt-0.5">mAP50-95 0.451, Precision 0.813</dd>
                         </div>
-                        <div class="text-xl font-bold text-brand-400">0.659</div>
+                        <div class="text-xl font-bold text-brand-400">0.737</div>
                     </div>
                 </dl>
             </div>
@@ -386,32 +386,32 @@
                     <div>
                         <div class="flex justify-between text-sm mb-1.5">
                             <span data-i18n="cls_person" class="font-medium text-slate-200"></span>
-                            <span class="text-slate-400">mAP50 0.688</span>
+                            <span class="text-slate-400">mAP50 0.673</span>
                         </div>
-                        <div class="w-full bg-slate-800 rounded-full h-2.5"><div class="bg-cls-person h-2.5 rounded-full" style="width: 69%"></div></div>
+                        <div class="w-full bg-slate-800 rounded-full h-2.5"><div class="bg-cls-person h-2.5 rounded-full" style="width: 67%"></div></div>
                     </div>
                     <div>
                         <div class="flex justify-between text-sm mb-1.5">
                             <span data-i18n="cls_car" class="font-medium text-slate-200"></span>
-                            <span class="text-slate-400">mAP50 0.592</span>
+                            <span class="text-slate-400">mAP50 0.725</span>
                         </div>
-                        <div class="w-full bg-slate-800 rounded-full h-2.5"><div class="bg-cls-car h-2.5 rounded-full" style="width: 59%"></div></div>
+                        <div class="w-full bg-slate-800 rounded-full h-2.5"><div class="bg-cls-car h-2.5 rounded-full" style="width: 73%"></div></div>
                     </div>
                     <div>
                         <div class="flex justify-between text-sm mb-1.5">
                             <span data-i18n="cls_bus" class="font-medium text-slate-200"></span>
-                            <span class="text-slate-400">mAP50 0.725</span>
+                            <span class="text-slate-400">mAP50 0.833</span>
                         </div>
-                        <div class="w-full bg-slate-800 rounded-full h-2.5"><div class="bg-cls-bus h-2.5 rounded-full" style="width: 73%"></div></div>
+                        <div class="w-full bg-slate-800 rounded-full h-2.5"><div class="bg-cls-bus h-2.5 rounded-full" style="width: 83%"></div></div>
                     </div>
                 </div>
                 <div class="mt-8 pt-6 border-t border-line grid grid-cols-2 gap-4 text-center">
                     <div>
-                        <div class="text-2xl font-bold text-brand-400">0.818</div>
+                        <div class="text-2xl font-bold text-brand-400">0.807</div>
                         <div class="text-xs text-slate-400 mt-0.5">Box Precision</div>
                     </div>
                     <div>
-                        <div class="text-2xl font-bold text-brand-400">0.557</div>
+                        <div class="text-2xl font-bold text-brand-400">0.662</div>
                         <div class="text-xs text-slate-400 mt-0.5">Box Recall</div>
                     </div>
                 </div>
@@ -447,18 +447,18 @@
                 hero_title: 'แยกคน รถยนต์ และรถบัสออกจากภาพ ตามขอบจริงทีละพิกเซล',
                 hero_desc: 'อัปโหลดรูปภาพ แล้วโมเดลจะวาดมาสก์ครอบวัตถุแต่ละชิ้นตามรูปร่างจริง ไม่ใช่แค่กรอบสี่เหลี่ยม ใช้งานได้ทันทีบนเบราว์เซอร์',
                 hero_cta: 'ลองใช้งานเลย', hero_cta2: 'ดูคุณสมบัติ',
-                hero_note: 'ใช้โมเดล YOLOv8n-seg ทำงานบน CPU ได้ ไม่ต้องมี GPU',
+                hero_note: 'ใช้โมเดล YOLO26n-seg ทำงานบน CPU ได้ ไม่ต้องมี GPU',
                 scene_caption: 'ภาพประกอบผลการแบ่งส่วนวัตถุ',
                 cls_person: 'คน', cls_car: 'รถยนต์', cls_bus: 'รถบัส',
                 stat_classes: 'คลาสวัตถุ', stat_val: 'วัตถุในชุดตรวจสอบ', stat_size: 'ขนาดโมเดล',
                 feat_title: 'ทำไมต้องใช้ PolyDetect',
-                feat_desc: 'โมเดลเทรนใหม่ทั้งหมดบน COCO 2017 โดยไม่ได้ใช้ข้อมูลชุดเดิม',
+                feat_desc: 'โมเดล YOLO26n-seg ที่ fine-tune ต่อจาก pretrained weights ด้วยภาพถนนจริงชุดย่อยที่คัดให้แต่ละคลาสสมดุล',
                 f1_title: 'แม่นยำระดับพิกเซล',
                 f1_desc: 'วาดมาสก์ตามขอบของวัตถุจริง ไม่ใช่แค่กรอบสี่เหลี่ยม จึงเห็นรูปร่างของคน รถยนต์ และรถบัสได้ชัดเจน',
                 f2_title: 'เบาและเร็ว',
-                f2_desc: 'โมเดลขนาด 6.3MB ประมวลผลบน CPU ได้ประมาณ 9 มิลลิวินาทีต่อภาพ ไม่จำเป็นต้องมี GPU',
-                f3_title: 'ข้อมูลจริงจาก COCO',
-                f3_desc: 'เทรนด้วยภาพ COCO 2017 จำนวน 583 ภาพ เฉพาะ person, car และ bus โดยทุกคลาสมีอย่างน้อย 100 วัตถุ',
+                f2_desc: 'โมเดลขนาด 6.6MB ประมวลผลบน CPU ได้ประมาณ 55 มิลลิวินาทีต่อภาพ ไม่จำเป็นต้องมี GPU',
+                f3_title: 'ข้อมูลจากภาพถนนจริง',
+                f3_desc: 'เทรนด้วยภาพถนนจริงจำนวน 95 ภาพ เฉพาะ person, car และ bus โดยทุกคลาสมีอย่างน้อย 100 วัตถุ',
                 try_title: 'ลองใช้งาน',
                 try_desc: 'อัปโหลดรูปภาพ (JPG, PNG, WEBP) แล้วกดตรวจจับวัตถุ',
                 drop_title: 'ลากรูปมาวางที่นี่ หรือกดเพื่อเลือกไฟล์',
@@ -478,9 +478,9 @@
                 det_empty: 'ไม่พบวัตถุ ลองลดค่าความมั่นใจขั้นต่ำแล้วตรวจจับอีกครั้ง',
                 err_prefix: 'เกิดข้อผิดพลาด: ',
                 about_title: 'เกี่ยวกับโมเดล',
-                about_desc: 'PolyDetect ใช้ YOLOv8n-seg ที่เทรนบนชุดข้อมูล COCO 2017 ใหม่ทั้งหมด โดยเลือกเฉพาะภาพที่มี person, car และ bus มา fine-tune',
-                ab_train: 'ชุดฝึก (Train)', ab_train_d: 'คน 1,730, รถยนต์ 395, รถบัส 193 วัตถุ', ab_train_n: '583 ภาพ',
-                ab_val: 'ชุดตรวจสอบ (Val)', ab_val_d: 'คน 604, รถยนต์ 108, รถบัส 59 วัตถุ', ab_val_n: '194 ภาพ',
+                about_desc: 'PolyDetect ใช้ YOLO26n-seg ที่ fine-tune ต่อจาก pretrained weights ด้วยภาพถนนจริง เฉพาะที่มี person, car และ bus ทุกคลาสมี polygon มากกว่า 100 รายการ (หมายเหตุ: ค่า mAP ได้ประโยชน์จาก pretrain และชุดตรวจสอบมีขนาดเล็ก)',
+                ab_train: 'ชุดฝึก (Train)', ab_train_d: 'คน 153, รถยนต์ 140, รถบัส 154 polygon', ab_train_n: '95 ภาพ',
+                ab_val: 'ชุดตรวจสอบ (Val)', ab_val_d: 'รวม 166 instance', ab_val_n: '40 ภาพ',
                 perf_title: 'ประสิทธิภาพแยกตามคลาส',
                 footer_built: 'สร้างด้วย นาย นรวิชญ์ แสงรัตน์ ITI SEC B 6806021411449',
             },
@@ -490,18 +490,18 @@
                 hero_title: 'Pick out people, cars and buses from any photo, pixel by pixel',
                 hero_desc: 'Upload an image and the model draws a mask around each object along its real outline, not just a bounding box. Runs right in your browser.',
                 hero_cta: 'Try it now', hero_cta2: 'See features',
-                hero_note: 'Powered by YOLOv8n-seg. Runs on CPU, no GPU needed.',
+                hero_note: 'Powered by YOLO26n-seg. Runs on CPU, no GPU needed.',
                 scene_caption: 'Illustration of segmentation output',
                 cls_person: 'Person', cls_car: 'Car', cls_bus: 'Bus',
                 stat_classes: 'Classes', stat_val: 'Validation instances', stat_size: 'Model size',
                 feat_title: 'Why PolyDetect',
-                feat_desc: 'A model trained from scratch on COCO 2017, without reusing the earlier dataset.',
+                feat_desc: 'A YOLO26n-seg model fine-tuned from pretrained weights on a balanced set of real street images.',
                 f1_title: 'Pixel-level accuracy',
                 f1_desc: 'Masks follow the real edges of each object instead of a box, so the shape of every person, car and bus stays clear.',
                 f2_title: 'Light and fast',
-                f2_desc: 'The 6.3MB model runs inference on CPU in about 9 ms per image. No GPU required.',
-                f3_title: 'Real data from COCO',
-                f3_desc: 'Trained on 583 COCO 2017 images covering person, car and bus only, with at least 100 objects in every class.',
+                f2_desc: 'The 6.6MB model runs inference on CPU in about 55 ms per image. No GPU required.',
+                f3_title: 'Real street imagery',
+                f3_desc: 'Trained on 95 real street images covering person, car and bus only, with at least 100 objects in every class.',
                 try_title: 'Try it out',
                 try_desc: 'Upload an image (JPG, PNG, WEBP) and run detection.',
                 drop_title: 'Drag an image here or click to choose a file',
@@ -521,9 +521,9 @@
                 det_empty: 'No objects found. Try lowering the confidence threshold and run again.',
                 err_prefix: 'Something went wrong: ',
                 about_title: 'About the model',
-                about_desc: 'PolyDetect uses YOLOv8n-seg trained from scratch on COCO 2017, fine-tuned only on images that contain person, car and bus.',
-                ab_train: 'Training set', ab_train_d: 'Person 1,730, car 395, bus 193 objects', ab_train_n: '583 images',
-                ab_val: 'Validation set', ab_val_d: 'Person 604, car 108, bus 59 objects', ab_val_n: '194 images',
+                about_desc: 'PolyDetect uses YOLO26n-seg fine-tuned from pretrained weights on real street images containing person, car and bus, with over 100 polygons per class. Note: mAP benefits from pretraining and the validation set is small.',
+                ab_train: 'Training set', ab_train_d: 'Person 153, car 140, bus 154 polygons', ab_train_n: '95 images',
+                ab_val: 'Validation set', ab_val_d: '166 instances in total', ab_val_n: '40 images',
                 perf_title: 'Performance per class',
                 footer_built: 'สร้างด้วย นาย นรวิชญ์ แสงรัตน์ ITI SEC B 6806021411449',
             },
@@ -597,7 +597,7 @@
                 return;
             }
             detectionsBody.innerHTML = lastData.detections.map((d, i) => {
-                const c = CLS[d.class] || { key: null, badge: 'bg-slate-700 text-slate-200', dot: 'bg-slate-400' };
+                const c = CLS[String(d.class).toLowerCase()] || { key: null, badge: 'bg-slate-700 text-slate-200', dot: 'bg-slate-400' };
                 const name = c.key ? t(c.key) : d.class;
                 return `
                     <tr class="hover:bg-slate-800/60">
